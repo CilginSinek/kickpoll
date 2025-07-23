@@ -102,7 +102,7 @@ kickpoll/
 
 ### Draw Örnekleri:
 - Oyun key dağıtımı
-- Discord Nitro çekilişi
+- Topluyo Turbo çekilişi
 - Özel ödül dağıtımı
 - Takipçi etkinlikleri
 
