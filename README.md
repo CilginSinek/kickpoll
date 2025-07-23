@@ -11,14 +11,37 @@ Kick.com chat mesajlarını gerçek zamanlı olarak takip ederek **poll (oylama)
 - **Görsel grafikler** - Chart.js ile dinamik pasta grafikleri
 - **Sonuç dışa aktarma** - Poll sonuçlarını TXT formatında indirebilme
 - **Canlı istatistikler** - Oy oranları ve toplam oy sayısı
+- **Timer sistemi** - Süre belirleyerek otomatik poll kapanması
+- **Pause/Resume** - Timer'ı durdurma ve devam ettirme
+- **Dublicate koruması** - Aynı seçenekler otomatik birleştiriliyor
 
 ### 🎲 Draw (Çekiliş) Sistemi
 - **Katılımcı toplama** - Belirtilen kelimeyi yazanları otomatik kayıt
-- **Özelleştirilebilir kelime** - Katılım kelimesini değiştirebilme (varsayılan: "katıl")
+- **Özelleştirilebilir kelime** - Ana sayfada katılım kelimesi belirleme
 - **Rastgele seçim** - Adil çekiliş algoritması
 - **Görsel animasyonlar** - Çekiliş sırasında dönen animasyon efektleri
 - **Kazanan gösterimi** - Büyük ve gösterişli kazanan ekranı
 - **Katılımcı takibi** - Gerçek zamanlı katılımcı listesi
+- **Otomatik çekiliş** - Süre bitince kendiliğinden başlar
+- **Timer kontrolü** - Süre durdurma ve devam ettirme
+
+## ⏰ Timer Sistemi
+
+### Ortak Süre Ayarı:
+- **Tek input** - Poll ve Draw için ortak süre ayarı
+- **Saniye/Dakika** seçeneği
+- **1-3600** arası değer girişi
+- **Opsiyonel** - Boş bırakılırsa süresiz çalışır
+
+### Poll Timer:
+- Süre bitince **oy almayı durdurur**
+- Sonuçları otomatik gösterir
+- Kazanan/berabere analizi
+
+### Draw Timer:
+- Süre boyunca **katılımcı toplar**
+- Süre bitince **otomatik çekiliş başlar**
+- Katılımcı yoksa uyarı verir
 
 ## 🎨 Tasarım Özellikleri
 
@@ -32,16 +55,37 @@ Kick.com chat mesajlarını gerçek zamanlı olarak takip ederek **poll (oylama)
 ## 📱 Kullanım
 
 ### Poll Başlatma:
-1. Ana sayfada Kick kanal adını girin
-2. Poll seçeneklerini virgülle ayırarak yazın (örn: `evet,hayır,kararsızım`)
-3. "Poll Başlat" butonuna tıklayın
-4. Kullanıcılar chat'te sayı veya seçenek yazarak oy verir
+1. Ana sayfada **Kick kanal adını** girin
+2. **Poll seçeneklerini** virgülle ayırarak yazın (örn: `evet,hayır,kararsızım`)
+3. **Süre belirleyin** (opsiyonel) - örn: `30 saniye`
+4. "Poll Başlat" butonuna tıklayın
+5. Kullanıcılar chat'te sayı veya seçenek yazarak oy verir
+6. Timer bitince otomatik kapanır veya manuel sıfırlayabilirsiniz
 
 ### Draw Başlatma:
-1. Ana sayfada Kick kanal adını girin
-2. "Draw Başlat" butonuna tıklayın
-3. Kullanıcılar belirtilen kelimeyi yazarak katılır
-4. "Çekilişi Başlat" ile rastgele kazanan seçilir
+1. Ana sayfada **Kick kanal adını** girin
+2. **Katılım kelimesini** belirleyin (örn: `katıl`, `!join`)
+3. **Süre belirleyin** (opsiyonel) - örn: `2 dakika`
+4. "Draw Başlat" butonuna tıklayın
+5. Kullanıcılar belirlediğiniz kelimeyi yazarak katılır
+6. Süre varsa otomatik başlar, yoksa manuel başlatırsınız
+
+## 🎮 Kontrol Özellikleri
+
+### Timer Kontrolü:
+- **Durdur** - Timer'ı geçici olarak durdurur
+- **Devam Et** - Timer kaldığı yerden devam eder
+- **Sıfırla** - Her şeyi sıfırlar ve timer'ı yeniden başlatır
+
+### Poll Kontrolü:
+- **Sıfırla** - Tüm oyları sıfırlar, timer yeniden başlar
+- **İndir** - Sonuçları TXT formatında indirir
+- **Durdur/Devam** - Timer kontrolü
+
+### Draw Kontrolü:
+- **Çekilişi Başlat** - Manuel çekiliş başlatır
+- **Sıfırla** - Katılımcıları sıfırlar, timer yeniden başlar
+- **Durdur/Devam** - Timer kontrolü
 
 ## 🔧 Teknik Detaylar
 
@@ -69,12 +113,12 @@ Kick.com chat mesajlarını gerçek zamanlı olarak takip ederek **poll (oylama)
 
 ```
 kickpoll/
-├── index.html          # Ana sayfa - Kanal ve seçenek girişi
-├── poll.html           # Poll sayfası - Oylama takibi
-├── draw.html           # Draw sayfası - Çekiliş sistemi
+├── index.html          # Ana sayfa - Kanal, seçenek, süre ve keyword girişi
+├── poll.html           # Poll sayfası - Oylama takibi ve timer
+├── draw.html           # Draw sayfası - Çekiliş sistemi ve timer
 ├── app.js              # Ana JavaScript - Ortak fonksiyonlar
-├── poll.js             # Poll JavaScript - Oylama mantığı
-├── draw.js             # Draw JavaScript - Çekiliş mantığı
+├── poll.js             # Poll JavaScript - Oylama mantığı ve timer
+├── draw.js             # Draw JavaScript - Çekiliş mantığı ve timer
 └── README.md           # Proje dokümantasyonu
 ```
 
@@ -82,7 +126,10 @@ kickpoll/
 
 1. **Dosyaları indirin** veya klonlayın
 2. **Web tarayıcısında** `index.html` dosyasını açın
-3. **Kick kanal adını** girin ve poll/draw başlatın
+3. **Kick kanal adını** girin
+4. **Poll/Draw** ayarlarını yapın
+5. **Timer** belirleyin (opsiyonel)
+6. **Poll/Draw** başlatın
 4. **İnternet bağlantısı** gereklidir (CDN'ler için)
 
 ## 🌐 Tarayıcı Uyumluluğu

@@ -7,6 +7,8 @@ let chatConnection = null;
 function startPoll() {
     const channelInput = document.getElementById('kickChannel').value.trim();
     const optionsInput = document.getElementById('pollOptions').value.trim();
+    const durationInput = document.getElementById('duration').value.trim();
+    const durationTypeInput = document.getElementById('durationType').value;
     
     if (!channelInput) {
         alert('Lütfen Kick kanal adını girin!');
@@ -21,6 +23,8 @@ function startPoll() {
     // Store data in localStorage for poll page
     localStorage.setItem('kickChannel', channelInput);
     localStorage.setItem('pollOptions', optionsInput);
+    localStorage.setItem('duration', durationInput || '');
+    localStorage.setItem('durationType', durationTypeInput);
     
     // Redirect to poll page
     window.location.href = 'poll.html';
@@ -29,14 +33,25 @@ function startPoll() {
 // Start draw function
 function startDraw() {
     const channelInput = document.getElementById('kickChannel').value.trim();
+    const durationInput = document.getElementById('duration').value.trim();
+    const durationTypeInput = document.getElementById('durationType').value;
+    const keywordInput = document.getElementById('drawKeyword').value.trim();
     
     if (!channelInput) {
         alert('Lütfen Kick kanal adını girin!');
         return;
     }
     
+    if (!keywordInput) {
+        alert('Lütfen draw katılım kelimesini girin!');
+        return;
+    }
+    
     // Store data in localStorage for draw page
     localStorage.setItem('kickChannel', channelInput);
+    localStorage.setItem('duration', durationInput || '');
+    localStorage.setItem('durationType', durationTypeInput);
+    localStorage.setItem('drawKeyword', keywordInput);
     
     // Redirect to draw page
     window.location.href = 'draw.html';
@@ -55,6 +70,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check if we have stored channel data
     const storedChannel = localStorage.getItem('kickChannel');
     const storedOptions = localStorage.getItem('pollOptions');
+    const storedDuration = localStorage.getItem('duration');
+    const storedDurationType = localStorage.getItem('durationType');
+    const storedDrawKeyword = localStorage.getItem('drawKeyword');
     
     if (storedChannel) {
         document.getElementById('kickChannel').value = storedChannel;
@@ -62,6 +80,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (storedOptions) {
         document.getElementById('pollOptions').value = storedOptions;
+    }
+    
+    if (storedDuration) {
+        document.getElementById('duration').value = storedDuration;
+    }
+    
+    if (storedDurationType) {
+        document.getElementById('durationType').value = storedDurationType;
+    }
+    
+    if (storedDrawKeyword) {
+        document.getElementById('drawKeyword').value = storedDrawKeyword;
     }
 });
 

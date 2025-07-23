@@ -60,6 +60,9 @@
                         <button onclick="resetPoll()" class="bg-red-500/20 text-red-300 px-4 py-2 rounded-lg hover:bg-red-500/30 transition-colors">
                             <i class="fas fa-redo mr-1"></i>Sıfırla
                         </button>
+                        <button id="pauseTimerBtn" onclick="toggleTimer()" class="bg-yellow-500/20 text-yellow-300 px-4 py-2 rounded-lg hover:bg-yellow-500/30 transition-colors hidden">
+                            <i class="fas fa-pause mr-1"></i>Durdur
+                        </button>
                         <button onclick="exportResults()" class="bg-green-500/20 text-green-300 px-4 py-2 rounded-lg hover:bg-green-500/30 transition-colors">
                             <i class="fas fa-download mr-1"></i>İndir
                         </button>
@@ -70,6 +73,28 @@
                 <div id="pollOptionsDisplay" class="mb-6">
                     <div class="text-white/80 text-sm mb-3">Seçenekler:</div>
                     <div id="optionsList" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- Timer Display -->
+                <div id="timerDisplay" class="mb-6 hidden">
+                    <div class="bg-orange-500/20 border border-orange-400/30 rounded-xl p-4 text-center">
+                        <div class="text-orange-300 text-sm mb-1">Kalan Süre</div>
+                        <div id="timerText" class="text-2xl font-bold text-orange-200">00:00</div>
+                        <div class="mt-2">
+                            <div class="bg-orange-400/30 rounded-full h-2 overflow-hidden">
+                                <div id="timerBar" class="bg-orange-400 h-full transition-all duration-1000" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Poll Status -->
+                <div id="pollStatus" class="mb-6 text-center">
+                    <div class="bg-green-500/20 border border-green-400/30 rounded-xl p-3">
+                        <div class="text-green-300 font-semibold">
+                            <i class="fas fa-circle text-green-400 mr-2"></i>Poll Aktif - Oylar Alınıyor
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Vote Bars -->
