@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poll - KickPoll</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .chat-message {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .vote-bar {
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="glass rounded-2xl p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button onclick="window.location.href='index.html'" class="text-white/80 hover:text-white">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </button>
+                    <h1 class="text-2xl font-bold text-white">
+                        <i class="fas fa-chart-pie mr-2"></i>Poll: <span id="channelName">-</span>
+                    </h1>
+                </div>
+                <div id="connectionStatus" class="flex items-center space-x-2">
+                    <i class="fas fa-circle text-gray-400"></i>
+                    <span class="text-white/60">Bağlanıyor...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Poll Results -->
+            <div class="lg:col-span-2 glass rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-white">
+                        <i class="fas fa-poll mr-2"></i>Poll Sonuçları
+                    </h2>
+                    <div class="flex space-x-2">
+                        <button onclick="resetPoll()" class="bg-red-500/20 text-red-300 px-4 py-2 rounded-lg hover:bg-red-500/30 transition-colors">
+                            <i class="fas fa-redo mr-1"></i>Sıfırla
+                        </button>
+                        <button onclick="exportResults()" class="bg-green-500/20 text-green-300 px-4 py-2 rounded-lg hover:bg-green-500/30 transition-colors">
+                            <i class="fas fa-download mr-1"></i>İndir
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Poll Options Display -->
+                <div id="pollOptionsDisplay" class="mb-6">
+                    <div class="text-white/80 text-sm mb-3">Seçenekler:</div>
+                    <div id="optionsList" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- Vote Bars -->
+                <div id="voteResults" class="space-y-4">
+                    <!-- Vote bars will be generated here -->
+                </div>
+
+                <!-- Total Votes -->
+                <div class="mt-6 text-center">
+                    <div class="text-white/60 text-sm">Toplam Oy</div>
+                    <div id="totalVotes" class="text-3xl font-bold text-white">0</div>
+                </div>
+
+                <!-- Chart -->
+                <div class="mt-6">
+                    <canvas id="pollChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Chat Feed -->
+            <div class="glass rounded-2xl p-6">
+                <h3 class="text-lg font-semibold text-white mb-4">
+                    <i class="fas fa-comments mr-2"></i>Chat Feed
+                </h3>
+                <div id="chatFeed" class="space-y-2 h-96 overflow-y-auto">
+                    <!-- Chat messages will appear here -->
+                </div>
+                
+                <!-- Voters List -->
+                <div class="mt-6">
+                    <h4 class="text-md font-semibold text-white mb-2">
+                        <i class="fas fa-users mr-2"></i>Oy Verenler (<span id="voterCount">0</span>)
+                    </h4>
+                    <div id="votersList" class="max-h-32 overflow-y-auto text-white/70 text-sm">
+                        <!-- Voter names will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="poll.js"></script>
+</body>
+</html>

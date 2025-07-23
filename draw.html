@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draw - KickPoll</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .participant {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .winner-announce {
+            animation: bounceIn 0.6s ease-out;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .roulette {
+            animation: spin 2s ease-in-out;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(1080deg); }
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="glass rounded-2xl p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button onclick="window.location.href='index.html'" class="text-white/80 hover:text-white">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </button>
+                    <h1 class="text-2xl font-bold text-white">
+                        <i class="fas fa-dice mr-2"></i>Draw: <span id="channelName">-</span>
+                    </h1>
+                </div>
+                <div id="connectionStatus" class="flex items-center space-x-2">
+                    <i class="fas fa-circle text-gray-400"></i>
+                    <span class="text-white/60">Bağlanıyor...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Draw Area -->
+            <div class="lg:col-span-2 glass rounded-2xl p-6">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-semibold text-white mb-4">
+                        <i class="fas fa-gift mr-2"></i>Çekiliş
+                    </h2>
+                    
+                    <!-- Keyword Input -->
+                    <div class="mb-6">
+                        <label class="block text-white/80 text-sm mb-2">Katılım Kelimesi:</label>
+                        <input 
+                            type="text" 
+                            id="drawKeyword" 
+                            placeholder="örn: katıl, join, !draw"
+                            value="katıl"
+                            class="px-4 py-2 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50"
+                        >
+                    </div>
+
+                    <!-- Draw Button -->
+                    <button 
+                        id="drawButton" 
+                        onclick="startDraw()"
+                        class="bg-gradient-to-r from-orange-400 to-pink-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+                    >
+                        <i class="fas fa-magic mr-2"></i>Çekilişi Başlat
+                    </button>
+
+                    <!-- Reset Button -->
+                    <button 
+                        onclick="resetDraw()"
+                        class="ml-4 bg-red-500/20 text-red-300 px-6 py-4 rounded-xl font-semibold hover:bg-red-500/30 transition-colors"
+                    >
+                        <i class="fas fa-redo mr-2"></i>Sıfırla
+                    </button>
+                </div>
+
+                <!-- Winner Display -->
+                <div id="winnerDisplay" class="text-center mb-8 hidden">
+                    <div class="winner-announce bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-8 rounded-2xl">
+                        <i class="fas fa-crown text-4xl mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">Kazanan!</h3>
+                        <div id="winnerName" class="text-3xl font-black"></div>
+                    </div>
+                </div>
+
+                <!-- Participants Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3" id="participantsGrid">
+                    <!-- Participants will be displayed here -->
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-6">
+                <!-- Stats -->
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">
+                        <i class="fas fa-chart-bar mr-2"></i>İstatistikler
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-white/80">
+                            <span>Katılımcı Sayısı:</span>
+                            <span id="participantCount" class="font-bold text-white">0</span>
+                        </div>
+                        <div class="flex justify-between text-white/80">
+                            <span>Durum:</span>
+                            <span id="drawStatus" class="font-bold text-green-300">Beklemede</span>
+                        </div>
+                        <div class="flex justify-between text-white/80">
+                            <span>Kelime:</span>
+                            <span id="currentKeyword" class="font-bold text-blue-300">katıl</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Feed -->
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">
+                        <i class="fas fa-comments mr-2"></i>Chat Feed
+                    </h3>
+                    <div id="chatFeed" class="space-y-2 h-64 overflow-y-auto">
+                        <!-- Chat messages will appear here -->
+                    </div>
+                </div>
+
+                <!-- Recent Participants -->
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">
+                        <i class="fas fa-users mr-2"></i>Son Katılanlar
+                    </h3>
+                    <div id="recentParticipants" class="space-y-2 max-h-32 overflow-y-auto">
+                        <!-- Recent participants will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="draw.js"></script>
+</body>
+</html>

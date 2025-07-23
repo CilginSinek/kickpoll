@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KickPoll - Kick Chat Poll & Draw</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="glass rounded-3xl p-8 w-full max-w-md shadow-2xl">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2">
+                <i class="fas fa-chart-bar mr-3"></i>KickPoll
+            </h1>
+            <p class="text-white/80">Kick Chat ile Poll ve Draw Yap</p>
+        </div>
+
+        <div class="space-y-6">
+            <!-- Kick Kanal Input -->
+            <div>
+                <label class="block text-white/90 text-sm font-medium mb-2">
+                    <i class="fas fa-user mr-2"></i>Kick Kanal Adı
+                </label>
+                <input 
+                    type="text" 
+                    id="kickChannel" 
+                    placeholder="örn: xQc"
+                    class="w-full px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                >
+            </div>
+
+            <!-- Poll Input -->
+            <div>
+                <label class="block text-white/90 text-sm font-medium mb-2">
+                    <i class="fas fa-poll mr-2"></i>Poll Seçenekleri (virgülle ayır)
+                </label>
+                <input 
+                    type="text" 
+                    id="pollOptions" 
+                    placeholder="evet,hayır,kararsızım"
+                    class="w-full px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                >
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="grid grid-cols-2 gap-4">
+                <button 
+                    onclick="startPoll()" 
+                    class="btn-primary text-white py-3 px-6 rounded-xl font-semibold flex items-center justify-center space-x-2"
+                >
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Poll Başlat</span>
+                </button>
+                
+                <button 
+                    onclick="startDraw()" 
+                    class="btn-primary text-white py-3 px-6 rounded-xl font-semibold flex items-center justify-center space-x-2"
+                >
+                    <i class="fas fa-dice"></i>
+                    <span>Draw Başlat</span>
+                </button>
+            </div>
+
+            <!-- Connection Status -->
+            <div id="connectionStatus" class="text-center text-white/60 text-sm">
+                <i class="fas fa-circle text-gray-400"></i> Bağlantı bekleniyor...
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
